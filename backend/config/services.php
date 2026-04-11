@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'face' => [
+        'mock_mode' => env('FACE_MOCK_MODE', true),
+        'match_threshold' => (float) env('FACE_MATCH_THRESHOLD', 0.6),
+    ],
+
+    'voice' => [
+        'enabled' => env('VOICE_MODULE_ENABLED', false),
+        'mock_mode' => env('VOICE_MOCK_MODE', true),
+    ],
+
 ];
