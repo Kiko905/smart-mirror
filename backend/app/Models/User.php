@@ -46,4 +46,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function mirrorProfiles()
+    {
+        return $this->hasMany(MirrorProfile::class);
+    }
+
+    public function faceEncodings()
+    {
+        return $this->hasMany(FaceEncoding::class);
+    }
 }
