@@ -72,9 +72,20 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from 'vue-draggable-next';
 import api from "../services/api";
+
+const props = defineProps({
+  userId: {
+    type: Number,
+    required: true,
+  },
+  profileName: {
+    type: String,
+    default: "Default",
+  },
+});
 
 const availableModules = ref([
   {
@@ -143,9 +154,14 @@ const removeModule = (instanceId) => {
 };
 
 const saveLayout = async () => {
+  if (!props.userId) {
+    alert("Select user first");
+    return;
+  }
+
   try {
     const payload = {
-      profile_name: "Default",
+      profile_name: props.profileName || "Default",
       layout: userLayout.value.map((item) => ({
         module: item.module,
         position: item.position,
@@ -155,7 +171,7 @@ const saveLayout = async () => {
 
     console.log("SAVING PAYLOAD:", payload);
 
-    await api.post("/mirror-layout/1", payload);
+    await api.post(`/mirror-layout/${props.userId}`, payload);
     alert("Layout saved successfully");
   } catch (error) {
     console.error(error);
@@ -164,8 +180,13 @@ const saveLayout = async () => {
 };
 
 const loadLayout = async () => {
+  if (!props.userId) {
+    userLayout.value = [];
+    return;
+  }
+
   try {
-    const response = await api.get("/mirror-layout/1");
+    const response = await api.get(`/mirror-layout/${props.userId}`);
 
     userLayout.value = response.data.layout.map((module) => ({
       ...module,
@@ -185,6 +206,13 @@ const loadLayout = async () => {
 onMounted(() => {
   loadLayout();
 });
+
+watch(
+  () => props.userId,
+  () => {
+    loadLayout();
+  }
+);
 
 const prettyLayout = computed(() =>
   JSON.stringify(
