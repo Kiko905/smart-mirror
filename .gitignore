@@ -1,0 +1,20 @@
+# Environment
+**/.env
+**/.env.*
+
+# Python cache
+**/__pycache__/
+**/*.pyc
+
+# Node modules
+**/node_modules/
+
+# Runtime/generated files
+pi-client/mirror/current_layout.json
+pi-client/mirror/current_profile.json
+pi-client/face/last_user.txt
+pi-client/face/encodings.json
+
+# Personal biometric assets
+pi-client/face/known_faces/*
+!pi-client/face/known_faces/.gitkeep
